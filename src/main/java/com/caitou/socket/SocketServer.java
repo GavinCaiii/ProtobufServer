@@ -39,6 +39,7 @@ public class SocketServer {
             blockingQueue = new ArrayBlockingQueue<>(10);
             executor = new ThreadPoolExecutor(1, 5, 60, TimeUnit.SECONDS, blockingQueue,
                     new ThreadPoolExecutor.DiscardPolicy());
+            System.out.println("========================== begin ==========================");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -55,15 +56,18 @@ public class SocketServer {
         listenThread.start();
     }
 
-    public void sendDataToClient(TransBean bean){
+    public void sendDataToClient(byte[] data){
         try {
             if (socket == null)
                 return;
             OutputStream os = socket.getOutputStream();
-            ObjectOutputStream oos = new ObjectOutputStream(os);
-            oos.writeObject(bean);
-            oos.flush();
-            oos.close();
+//            ObjectOutputStream oos = new ObjectOutputStream(os);
+//            oos.writeObject(bean);
+//            oos.flush();
+//            oos.close();
+            os.write(data, 0, data.length);
+            os.flush();
+            os.close();
         } catch (IOException e) {
             e.printStackTrace();
         }

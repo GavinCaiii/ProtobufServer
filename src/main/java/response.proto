@@ -1,0 +1,22 @@
+package com.caitou.protocol;
+
+option java_package = "com.caitou.protocol";
+
+option java_outer_classname = "ResponseProto";
+
+//下行帧
+message Response {
+    optional IntResponse intResponse = 1;
+    optional StringResponse stringResponse = 2;
+}
+
+//整型数据回复
+message IntResponse {
+    required int32 int32Data = 1;
+    required int64 int64Data = 2;
+}
+
+//字符串型数据回复
+message StringResponse {
+    required string strData = 1;
+}

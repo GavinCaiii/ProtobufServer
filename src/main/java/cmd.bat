@@ -1,0 +1,1 @@
+protoc --java_out=./ ./protocol.proto ./request.proto ./response.proto
