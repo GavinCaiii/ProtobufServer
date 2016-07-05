@@ -19,8 +19,8 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="ProtobufServer_main" target="1.5" />
-      <module name="ProtobufServer_test" target="1.5" />
+      <module name="ProtobufServer_main" target="1.8" />
+      <module name="ProtobufServer_test" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>

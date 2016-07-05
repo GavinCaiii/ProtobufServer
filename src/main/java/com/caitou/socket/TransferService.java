@@ -6,15 +6,14 @@ import java.io.ObjectInputStream;
 import java.net.Socket;
 
 /**
- * @className:
+ * @className: TransferService
  * @classDescription:
  * @Author: Guangzhao Cai
  * @createTime: 2016-06-24.
  */
-public class ProtobufService implements Runnable{
+public class TransferService implements Runnable{
     private DataReceived mListener;
     private Socket mConnect;
-    private TransBean mBean;
 
     @Override
     public void run() {
@@ -22,11 +21,6 @@ public class ProtobufService implements Runnable{
             return;
         try {
             InputStream is = mConnect.getInputStream();
-//            ObjectInputStream ois = new ObjectInputStream(is);
-//            Object obj = ois.readObject();
-//            if (!(obj instanceof TransBean))
-//                return;
-//            mBean = (TransBean)obj;
             byte[] buffer = new byte[1024];
             int ret;
             if ((ret = is.read(buffer)) != -1){
@@ -41,7 +35,7 @@ public class ProtobufService implements Runnable{
         }
     }
 
-    public ProtobufService(Socket connect, DataReceived listener){
+    public TransferService(Socket connect, DataReceived listener){
         mConnect = connect;
         mListener = listener;
     }

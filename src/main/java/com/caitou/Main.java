@@ -3,7 +3,7 @@ package com.caitou;
 import com.caitou.data.BaseFrame;
 import java.lang.String;
 import com.caitou.protocol.Protocol;
-import com.caitou.socket.ProtobufService;
+import com.caitou.socket.TransferService;
 import com.caitou.socket.SocketServer;
 import com.caitou.utils.HexDump;
 import com.google.protobuf.InvalidProtocolBufferException;
@@ -12,7 +12,7 @@ public class Main {
 
     public static void main(String[] args) {
 	// write your code here
-        SocketServer.getInstance().startToListen(new ProtobufService.DataReceived() {
+        SocketServer.getInstance().startToListen(new TransferService.DataReceived() {
             public void onReceived(byte[] data) {
                 if (data != null){
                     Protocol.Frame frame = null;
@@ -47,7 +47,7 @@ public class Main {
                 }
 
                 //返回到客户端
-//                SocketServer.getInstance().sendDataToClient(data);
+                SocketServer.getInstance().sendDataToClient(data);
             }
         });
     }

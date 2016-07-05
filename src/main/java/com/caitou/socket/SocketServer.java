@@ -1,7 +1,6 @@
 package com.caitou.socket;
 
 import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -23,7 +22,7 @@ public class SocketServer {
     private BlockingQueue<Runnable> blockingQueue = null;
     private ThreadPoolExecutor executor = null;
     private ListenThread listenThread = null;
-    private ProtobufService.DataReceived mListener;
+    private TransferService.DataReceived mListener;
 
     private static SocketServer mInstance = null;
 
@@ -48,7 +47,7 @@ public class SocketServer {
     /**
      * Start to listen on the socket, when get a connection run a Service to serve for the client.
      */
-    public void startToListen(ProtobufService.DataReceived listener){
+    public void startToListen(TransferService.DataReceived listener){
         if (listenThread == null || listenThread.getState() != Thread.State.NEW)
             listenThread = new ListenThread();
         listenThread.isRunning = true;
@@ -93,15 +92,13 @@ public class SocketServer {
     private class ListenThread extends Thread {
         boolean isRunning = false;
 
-        public ListenThread(){
-        }
         @Override
         public void run() {
             while (isRunning){
                 try {
                     socket = server.accept();
                     System.out.println("============= SocketServer : connect success =============");
-                    executor.execute(new ProtobufService(socket, mListener));
+                    executor.execute(new TransferService(socket, mListener));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
