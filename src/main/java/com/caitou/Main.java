@@ -2,6 +2,9 @@ package com.caitou;
 
 import com.caitou.data.BaseFrame;
 import java.lang.String;
+
+import com.caitou.data.IntResponseData;
+import com.caitou.data.StringResponseData;
 import com.caitou.protocol.Protocol;
 import com.caitou.socket.TransferService;
 import com.caitou.socket.SocketServer;
@@ -11,6 +14,7 @@ import com.google.protobuf.InvalidProtocolBufferException;
 public class Main {
 
     public static void main(String[] args) {
+
 	// write your code here
         SocketServer.getInstance().startToListen(new TransferService.DataReceived() {
             public void onReceived(byte[] data) {
@@ -38,16 +42,21 @@ public class Main {
                         System.out.println("==================================================");
                         System.out.println("int32 = " + int32 + "; int64 = " + int64);
                         System.out.println("==================================================");
+
+                        frame = IntResponseData.create().toFrame();
+                        SocketServer.getInstance().sendDataToClient(frame.toByteArray());
+
                     } else if (funCode == BaseFrame.FUNC_STRING){
                         String strData = frame.getRequest().getStringRequest().getStrData();
                         System.out.println("==================================================");
                         System.out.println("strData = " + strData);
                         System.out.println("==================================================");
+
+                        frame = StringResponseData.initData(strData).toFrame();
+                        SocketServer.getInstance().sendDataToClient(frame.toByteArray());
+
                     }
                 }
-
-                //返回到客户端
-                SocketServer.getInstance().sendDataToClient(data);
             }
         });
     }

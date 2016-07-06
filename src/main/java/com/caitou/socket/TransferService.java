@@ -21,14 +21,17 @@ public class TransferService implements Runnable{
             return;
         try {
             InputStream is = mConnect.getInputStream();
-            byte[] buffer = new byte[1024];
-            int ret;
-            if ((ret = is.read(buffer)) != -1){
-                byte[] data = new byte[ret];
-                for (int i = 0; i < ret; i ++){
-                    data[i] = buffer[i];
-                }
-                mListener.onReceived(data);
+            while (true){
+                byte[] buffer = new byte[1024];
+                int ret;
+                if ((ret = is.read(buffer)) != -1){
+                    byte[] data = new byte[ret];
+                    for (int i = 0; i < ret; i ++){
+                        data[i] = buffer[i];
+                    }
+                    mListener.onReceived(data);
+                } else
+                    return;
             }
         } catch (IOException e) {
             e.printStackTrace();

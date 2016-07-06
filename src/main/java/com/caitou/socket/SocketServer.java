@@ -60,13 +60,9 @@ public class SocketServer {
             if (socket == null)
                 return;
             OutputStream os = socket.getOutputStream();
-//            ObjectOutputStream oos = new ObjectOutputStream(os);
-//            oos.writeObject(bean);
-//            oos.flush();
-//            oos.close();
             os.write(data, 0, data.length);
             os.flush();
-            os.close();
+//            os.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -91,6 +87,7 @@ public class SocketServer {
     //客户端连接线程
     private class ListenThread extends Thread {
         boolean isRunning = false;
+        int connectCount = 0;
 
         @Override
         public void run() {
@@ -99,6 +96,7 @@ public class SocketServer {
                     socket = server.accept();
                     System.out.println("============= SocketServer : connect success =============");
                     executor.execute(new TransferService(socket, mListener));
+                    connectCount ++;
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

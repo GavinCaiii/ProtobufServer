@@ -2,27 +2,26 @@ package com.caitou.data;
 
 import com.caitou.protocol.Protocol;
 import com.caitou.protocol.RequestProto;
-import com.caitou.protocol.ResponseProto;
 
 /**
  * Created by Mr.Caiii on 2016-07-04.
  */
-public class IntRequestData extends BaseFrame {
+public class IntResponseData extends BaseFrame {
     public Request request;
     public Response response;
 
-    public IntRequestData() {
+    public IntResponseData() {
         this.request = new Request();
         this.response = new Response();
     }
 
-    public static IntRequestData create(){
-        IntRequestData intRequestData = new IntRequestData();
-        intRequestData.initHead(CTRL_SERVER_TO_CLIENT, FUNC_INT);
-        intRequestData.request.int32 = 456;
-        intRequestData.request.int64 = 123456;
+    public static IntResponseData create(){
+        IntResponseData intResponseData = new IntResponseData();
+        intResponseData.initHead(CTRL_SERVER_TO_CLIENT, FUNC_INT);
+        intResponseData.response.rInt32 = 456;
+        intResponseData.response.rInt64 = 123456;
 
-        return intRequestData;
+        return intResponseData;
     }
 
     @Override
@@ -31,8 +30,8 @@ public class IntRequestData extends BaseFrame {
         RequestProto.Request.Builder reqBuilder = RequestProto.Request.newBuilder();
         RequestProto.IntRequest.Builder intReqBuilder = RequestProto.IntRequest.newBuilder();
 
-        intReqBuilder.setInt32Data(this.request.int32);
-        intReqBuilder.setInt64Data(this.request.int64);
+        intReqBuilder.setInt32Data(this.response.rInt32);
+        intReqBuilder.setInt64Data(this.response.rInt64);
 
         reqBuilder.setIntRequest(intReqBuilder);
         frameBuilder.setHeader(getFrameHeader());
@@ -41,14 +40,14 @@ public class IntRequestData extends BaseFrame {
         return frameBuilder.build();
     }
 
-    public static IntRequestData parseFrom(Protocol.Frame frame){
-        IntRequestData intRequestData = new IntRequestData();
-        intRequestData.paresFromHeader(frame.getHeader());
+    public static IntResponseData parseFrom(Protocol.Frame frame){
+        IntResponseData intResponseData = new IntResponseData();
+        intResponseData.paresFromHeader(frame.getHeader());
 
-        intRequestData.response.rInt32 = frame.getResponse().getIntResponse().getInt32Data();
-        intRequestData.response.rInt64 = frame.getResponse().getIntResponse().getInt64Data();
+        intResponseData.response.rInt32 = frame.getResponse().getIntResponse().getInt32Data();
+        intResponseData.response.rInt64 = frame.getResponse().getIntResponse().getInt64Data();
 
-        return intRequestData;
+        return intResponseData;
     }
 
     public class Request {
